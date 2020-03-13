@@ -3,12 +3,16 @@
     <!--首页头部-->
 
     <HeaderTop :title="address.name">
-        <span class="header_search" slot="left">
+      <router-link to="/search" class="header_search" slot="left">
+        <span>
           <i class="iconfont icon-sousuo"></i>
         </span>
-      <span class="header_login" slot="right">
-          <span class="header_login_text">登录|注册</span>
-        </span>
+      </router-link>
+      <router-link class="header_login" slot="right" :to="userInfo._id ? '/userinfo' : '/login'">
+        <span class="header_login_text" v-if="!userInfo._id">登录|注册</span>
+        <span class="header_login_text" v-else><i class="iconfont icon-person"></i></span>
+
+      </router-link>
     </HeaderTop>
 
     <!--首页导航-->
@@ -28,7 +32,7 @@
         <!-- Add Pagination -->
         <div class="swiper-pagination"></div>
       </div>
-      <img v-else src="./images/msite_back.svg" alt="back" />
+      <img v-else src="./images/msite_back.svg" alt="back"/>
     </nav>
 
     <!--首页附近商家-->
@@ -58,15 +62,15 @@
     },
     mounted() {
       // this.$store.dispatch('getAddress');
-      this.getAddress();
+      // this.getAddress();
       this.getCategorys();
     },
 
     methods: {
-      ...mapActions(['getAddress', 'getCategorys'])
+      ...mapActions(['getCategorys'])
     },
     computed: {
-      ...mapState(['address', 'categorys']),
+      ...mapState(['address', 'categorys', 'userInfo']),
       categorysArr() {
         /*
         * 二维数据，每个子数组包含8个元素，
@@ -88,7 +92,7 @@
       },
     },
     watch: {
-      categorys (value) {
+      categorys(value) {
         this.$nextTick(() => {
           new Swiper('.swiper-container', {
             loop: true,

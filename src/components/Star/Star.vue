@@ -1,6 +1,6 @@
 <template>
   <div class="star" :class="'star-'+size">
-    <span class="star-item" v-for="starClass in starClasse" :key="index" :class="starClass"></span>
+    <span class="star-item" v-for="(starClass , index) in starClasse" :key="index" :class="starClass"></span>
   </div>
 </template>
 

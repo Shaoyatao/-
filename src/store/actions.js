@@ -5,11 +5,21 @@ import {
   RECEIVE_ADDRESS,
   RECEIVE_CATEGORYS,
   RECEIVE_SHOPS,
+  RECEIVE_USER_INFO,
+  RESET_USER_INFO,
+  RECIVE_SHOP_GOODS,
+  RECIVE_SHOP_INFO,
+  RECIVE_SHOP_RATINGS,
 } from './mutation-types'
 import {
   reqAddress,
   reqFoodCategorys,
   reqShops,
+  reqUserInfo,
+  reqLogout,
+  reqShopInfo,
+  reqShopRatings,
+  reqShopGoods
 } from '../api'
 
 export default {
@@ -45,6 +55,49 @@ export default {
     if (result.code === 0) {
       const shops = result.data
       commit(RECEIVE_SHOPS, {shops})
+    }
+  },
+  //同步记录用户信息
+  recordUser({commit},userInfo){
+    commit(RECEIVE_USER_INFO,{userInfo});
+  },
+
+  //异步获取用户信息
+  async getUserInfo({commit}){
+    const result = await reqUserInfo();
+    // console.log(result.code)
+    if(result.code === 0 ){
+      const userInfo = result.data;
+      commit(RECEIVE_USER_INFO,{userInfo});
+    }
+  },
+  //异步登出用户
+  async logout({commit}){
+    const result = await reqLogout();
+    console.log(result)
+    if(result.code === 0 ){
+      commit(RESET_USER_INFO);
+    }
+  } ,
+  async reqShopGoods({commit}){
+    const result = await reqShopGoods();
+    if(result.code === 0 ){
+      const goods = result.data;
+      commit(RECIVE_SHOP_GOODS,{goods});
+    }
+  },
+  async reqShopInfo({commit}){
+    const result = await reqShopInfo();
+    if(result.code === 0 ){
+      const info = result.data;
+      commit(RECIVE_SHOP_INFO,{info});
+    }
+  },
+  async reqShopRatings({commit}){
+    const result = await reqShopRatings();
+    if(result.code === 0 ){
+      const ratings = result.data;
+      commit(RECIVE_SHOP_RATINGS,{ratings});
     }
   },
 }

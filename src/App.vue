@@ -6,16 +6,18 @@
 </template>
 
 <script>
-  // import {mapActions} from 'vuex'
+  import {mapActions} from 'vuex'
+
   import FooterGuide from './components/FooterGuide/FooterGuide'
   // import {reqFoodCategorys} from './api'
   export default {
     mounted() {
       // this.$store.dispatch('getAddress')
-      // this.getAddress();
+      this.getAddress();
+      this.getUserInfo();
     },
     methods: {
-      // ...mapActions(['getAddress'])
+      ...mapActions(['getAddress','getUserInfo'])
     },
     components: {
       FooterGuide,

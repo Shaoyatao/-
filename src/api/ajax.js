@@ -18,7 +18,7 @@ export default function ajax(url, data = {}, type = 'GET') {
             })
             if (dataStr !== '') {
                 dataStr = dataStr.substring(0, dataStr.lastIndexOf('&'))
-                url = url + '?' + 'dataStr'
+                url = url + '?' + dataStr
             }
             //发送GET请求  返回promise对象
             promise = axios.get(url)
