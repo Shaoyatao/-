@@ -79,11 +79,12 @@ export default {
       commit(RESET_USER_INFO);
     }
   } ,
-  async reqShopGoods({commit}){
+  async reqShopGoods({commit},callback){
     const result = await reqShopGoods();
     if(result.code === 0 ){
       const goods = result.data;
       commit(RECIVE_SHOP_GOODS,{goods});
+      callback && callback()
     }
   },
   async reqShopInfo({commit}){
