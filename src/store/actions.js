@@ -10,6 +10,8 @@ import {
   RECIVE_SHOP_GOODS,
   RECIVE_SHOP_INFO,
   RECIVE_SHOP_RATINGS,
+  INCREMENT_FOOD_COUNT,
+  DECREMENT_FOOD_COUNT
 } from './mutation-types'
 import {
   reqAddress,
@@ -58,47 +60,54 @@ export default {
     }
   },
   //同步记录用户信息
-  recordUser({commit},userInfo){
-    commit(RECEIVE_USER_INFO,{userInfo});
+  recordUser({commit}, userInfo) {
+    commit(RECEIVE_USER_INFO, {userInfo});
   },
 
   //异步获取用户信息
-  async getUserInfo({commit}){
+  async getUserInfo({commit}) {
     const result = await reqUserInfo();
     // console.log(result.code)
-    if(result.code === 0 ){
+    if (result.code === 0) {
       const userInfo = result.data;
-      commit(RECEIVE_USER_INFO,{userInfo});
+      commit(RECEIVE_USER_INFO, {userInfo});
     }
   },
   //异步登出用户
-  async logout({commit}){
+  async logout({commit}) {
     const result = await reqLogout();
     console.log(result)
-    if(result.code === 0 ){
+    if (result.code === 0) {
       commit(RESET_USER_INFO);
     }
-  } ,
-  async reqShopGoods({commit},callback){
+  },
+  async reqShopGoods({commit}, callback) {
     const result = await reqShopGoods();
-    if(result.code === 0 ){
+    if (result.code === 0) {
       const goods = result.data;
-      commit(RECIVE_SHOP_GOODS,{goods});
+      commit(RECIVE_SHOP_GOODS, {goods});
       callback && callback()
     }
   },
-  async reqShopInfo({commit}){
+  async reqShopInfo({commit}) {
     const result = await reqShopInfo();
-    if(result.code === 0 ){
+    if (result.code === 0) {
       const info = result.data;
-      commit(RECIVE_SHOP_INFO,{info});
+      commit(RECIVE_SHOP_INFO, {info});
     }
   },
-  async reqShopRatings({commit}){
+  async reqShopRatings({commit}) {
     const result = await reqShopRatings();
-    if(result.code === 0 ){
+    if (result.code === 0) {
       const ratings = result.data;
-      commit(RECIVE_SHOP_RATINGS,{ratings});
+      commit(RECIVE_SHOP_RATINGS, {ratings});
+    }
+  },
+  updateFoodCount({commit}, {isAdd, food}) {
+    if (isAdd) {
+      commit(INCREMENT_FOOD_COUNT, {food})
+    } else {
+      commit(DECREMENT_FOOD_COUNT, {food})
     }
   },
 }

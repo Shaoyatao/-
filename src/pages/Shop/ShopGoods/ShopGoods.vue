@@ -23,7 +23,10 @@
                   <div class="extra"><span class="count">月售 {{food.sellCount}} 份</span><span>好评率 {{food.rating}}%</span>
                   </div>
                   <div class="price"><span class="now">￥{{food.price}}</span></div>
-                  <div class="cartcontrol-wrapper">CartControl</div>
+
+                  <div class="cartcontrol-wrapper">
+                    <CartControl :food="food"></CartControl>
+                  </div>
                 </div>
               </li>
 
@@ -40,9 +43,13 @@
 <script>
   import {mapState} from "vuex"
   import BScroll from "better-scroll"
+  import CartControl from "../../../components/CartControl/CartControl";
   // let scroll = new BScroll('.menu-wrapper') //没有数据，报错
   export default {
     name: "ShopGoods",
+    components:{
+      CartControl
+    },
     data() {
       return {
         scrollY: 0,

@@ -12,6 +12,8 @@ import {
   RECIVE_SHOP_GOODS,
   RECIVE_SHOP_INFO,
   RECIVE_SHOP_RATINGS,
+  INCREMENT_FOOD_COUNT,
+  DECREMENT_FOOD_COUNT
 } from './mutation-types'
 
 export default {
@@ -43,5 +45,18 @@ export default {
   },
   [RECIVE_SHOP_RATINGS](state, {ratings}) {
     state.ratings = ratings
+  },
+  [INCREMENT_FOOD_COUNT](state, {food}) {
+    if(!food.count){
+      // food.count = 1; //更新数据但是没有更新界面
+      Vue.set(food,'count',1);
+    }else{
+      food.count++
+    }
+  },
+  [DECREMENT_FOOD_COUNT](state, {food}) {
+    if(food.count){
+      food.count--
+    }
   },
 }
