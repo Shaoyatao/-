@@ -13,8 +13,7 @@
           <div :class="{on : loginWay}">
             <section class="login_message">
               <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
-              <button :disabled="!rightPhone" class="get_verification" :class="{right_phone :rightPhone}"
-                      @click.prevent="getCode()">{{computeTime>0 ? `已发送（${computeTime}s）` : '获取验证码'}}
+              <button :disabled="!rightPhone" class="get_verification" :class="{right_phone :rightPhone}" @click.prevent="getCode()">{{computeTime>0 ? `已发送（${computeTime}s）` : '获取验证码'}}
               </button>
             </section>
             <section class="login_verification">
@@ -84,10 +83,25 @@
     },
     computed: {
       //正则判断手机号是否为11位
+      // 计时不为 0
       rightPhone() {
-        return /^1\d{10}$/.test(this.phone)
+        const rp = /^1\d{10}$/.test(this.phone) && !(this.computeTime>0)
+        // debugger
+
+
+        return rp
       }
     },
+   /* watch:{
+      computeTime(){
+        console.log("---"+computeTime);
+        this.$nextTick(() => {
+          if(computeTime>0){
+            rightPhone = false
+          }
+        })
+      }
+    },*/
     methods: {
       //异步获取验证码
       async getCode() {

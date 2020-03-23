@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="goods">
-      <div class="menu-wrapper" ref="menuWrapper">
+      <div class="menu-wrapper" ref="menuWrapper" v-if="goods.length">
         <ul>
           <li class="menu-item" v-for="(good,index) in goods" :key="index" :class="{current:index===currentIndex}" @click="clickMenuItem(index)">
             <span class="text bottom-border-1px">
@@ -15,7 +15,8 @@
           <li class="food-list-hook" v-for="(good,index) in goods" :key="index">
             <h1 class="title">{{good.name}}</h1>
             <ul>
-              <li class="food-item bottom-border-1px" v-for="(food,index) in good.foods" :key="index">
+              <li class="food-item bottom-border-1px" v-for="(food,index) in good.foods"
+                  @click="showFood(food)" :key="index">
                 <div class="icon"><img width="57" height="57" :src="food.icon">
                 </div>
                 <div class="content"><h2 class="name">{{food.name}}</h2>
@@ -23,7 +24,6 @@
                   <div class="extra"><span class="count">月售 {{food.sellCount}} 份</span><span>好评率 {{food.rating}}%</span>
                   </div>
                   <div class="price"><span class="now">￥{{food.price}}</span></div>
-
                   <div class="cartcontrol-wrapper">
                     <CartControl :food="food"></CartControl>
                   </div>
@@ -35,7 +35,9 @@
 
         </ul>
       </div>
+      <ShopCart/>
     </div>
+    <Food :food="food" ref="food"/>
   </div>
 
 </template>
@@ -44,21 +46,27 @@
   import {mapState} from "vuex"
   import BScroll from "better-scroll"
   import CartControl from "../../../components/CartControl/CartControl";
+  import Food from  "../../../components/Food/Food"
+  import ShopCart from "../../../components/ShopCart/ShopCart";
   // let scroll = new BScroll('.menu-wrapper') //没有数据，报错
   export default {
     name: "ShopGoods",
     components:{
-      CartControl
+      CartControl,
+      Food,
+      ShopCart
     },
     data() {
       return {
         scrollY: 0,
-        tops: []
+        tops: [],
+        food:{},
       }
     },
     mounted() {
       this.$store.dispatch("reqShopGoods", () => {
         this.$nextTick(() => {
+          // console.log(goods);
           // this._initScrollY();
           // this._initTops();
         })
@@ -119,15 +127,22 @@
         const scrollY = -this.tops[index];
         this.scrollY = scrollY
         this.foodsScroll.scrollTo(0,scrollY,300)
+      },
+      showFood (food) {
+        // 设置food
+        this.food = food
+        // 显示food组件 (在父组件中调用子组件对象的方法)
+        this.$refs.food.toggleShow()
       }
     },
     watch: {
       goods() {
         this.$nextTick(() => {
-          if (this.goods) {
-            this._initTops()
+          // if (this.goods) {
+          //   console.log("goods:"+goods);
+            this._initTops();
             this._initScrollY();
-          }
+          // }
         })
       }
     }
